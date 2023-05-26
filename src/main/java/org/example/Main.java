@@ -194,7 +194,6 @@ public class Main {
 //        long startId = 8;
 //        long countUsersForButches = 1000000;
 //
-//
 //        List<User> users10Batch = service.generateTestUsers(startId, countUsersForButches,
 //                "Alisa 10 batches  ", 25);
 //        System.out.println("Created 1000000 for 10 batch");
