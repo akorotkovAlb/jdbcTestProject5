@@ -23,6 +23,7 @@ public class UserService {
     private PreparedStatement selectAllStatement;
     private Statement selectAllSimpleStatement;
     private PreparedStatement transactionalPrepareStatement;
+    private PreparedStatement transactionalPrepareStatement2;
 
     public UserService(Connection connection) {
         this.connection = connection;
@@ -32,6 +33,7 @@ public class UserService {
             this.selectAllStatement = connection.prepareStatement(SELECT_ALL_STRING);
             this.selectAllSimpleStatement = connection.createStatement();
             this.transactionalPrepareStatement = connection.prepareStatement(INSERT_STRING);
+            this.transactionalPrepareStatement2 = connection.prepareStatement(INSERT_STRING);
         } catch(SQLException e) {
             System.out.println("User Service construction exception. Reason: " + e.getMessage());
         }
@@ -140,17 +142,24 @@ public class UserService {
         return users;
     }
 
-    public void transactionalInsert(List<User> users) throws SQLException {
+    public void transactionalInsert(List<User> users1, List<User> users2) throws SQLException {
         try {
             this.connection.setAutoCommit(false);
-            for(User user : users) {
+            for(User user : users1) {
                 transactionalPrepareStatement.setLong(1, user.getId());
                 transactionalPrepareStatement.setString(2, user.getName());
                 transactionalPrepareStatement.setDate(3, java.sql.Date.valueOf(user.getBirthday().toString()));
                 transactionalPrepareStatement.addBatch();
             }
+            for(User user : users2) {
+                transactionalPrepareStatement2.setLong(1, user.getId());
+                transactionalPrepareStatement2.setString(2, user.getName());
+                transactionalPrepareStatement2.setDate(3, java.sql.Date.valueOf(user.getBirthday().toString()));
+                transactionalPrepareStatement2.addBatch();
+            }
             try {
                 transactionalPrepareStatement.executeBatch();
+                transactionalPrepareStatement2.executeBatch();
                 connection.commit();
             } catch(SQLException e) {
                 System.out.println("TRANSACTIONAL FAIL. Rollback changes. Reason: " + e.getMessage());

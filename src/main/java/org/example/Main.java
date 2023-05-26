@@ -317,12 +317,15 @@ public class Main {
 
 
         //TODO: transaction insert 10 users (success transactional insert)
-//        long startId = 8;
-//        long countUsersForButches = 10;
-//        List<User> users = service.generateTestUsers(startId, countUsersForButches,
-//                "Transactional Alisa 10 ", 25);
+        long startId = 5;
+        long countUsersForButches = 5;
+        List<User> users1 = service.generateTestUsers(startId, countUsersForButches,
+                "Transactional Alisa 10 ", 25);
+        List<User> users2 = service.generateTestUsers(startId + 5, countUsersForButches,
+                "Transactional Milla 10 ", 15);
 //        try {
-//            service.transactionalInsert(users);
+            service.saveAllUsersWithBatchSize(users1, 5);
+            service.saveAllUsersWithBatchSize(users2, 5);
 //        } catch(SQLException e) {
 //            System.out.println("FAIL change autoCommit to active optional.");
 //        }
