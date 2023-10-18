@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <property name="schema.name" value="public"/>
+
+    <property name="type.string" value="VARCHAR" dbms="postgresql"/>
+    <property name="type.boolean" value="BOOL" dbms="postgresql"/>
+    <property name="type.int" value="int4" dbms="postgresql"/>
+    <property name="type.long" value="BIGINT" dbms="postgresql"/>
+    <property name="type.uuid" value="UUID" dbms="postgresql"/>
+    <property name="type.json" value="jsonb" dbms="postgresql"/>
+    <property name="type.timestamp" value="TIMESTAMP WITH TIME ZONE" dbms="postgresql"/>
+    <property name="type.big_decimal" value="NUMERIC" dbms="postgresql"/>
+    <property name="type.blob" value="bytea" dbms="postgresql"/>
+    <property name="now" value="now()::timestamp(0)" dbms="postgresql"/>
+
+    <include file="changesets/changeset-user-table.xml"/>
+
+</databaseChangeLog>

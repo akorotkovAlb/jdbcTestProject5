@@ -21,7 +21,7 @@ public class PropertyReader {
 
             return new StringBuilder("jdbc:")
                     .append(prop.getProperty("h2.db.host"))
-                    .append(":./")
+                    .append(":C:\\java_dev\\6\\jdbcTestProject1\\db\\")
                     .append(prop.getProperty("h2.db.database"))
                     .toString();
 
@@ -50,6 +50,7 @@ public class PropertyReader {
                     .append(prop.getProperty("postgres.db.port"))
                     .append("/")
                     .append(prop.getProperty("postgres.db.database"))
+                    .append("?currentSchema=test1")
                     .toString();
         } catch (IOException ex) {
             ex.printStackTrace();

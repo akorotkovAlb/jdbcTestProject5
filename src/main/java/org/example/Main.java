@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.config.MysqlDatabase;
 import org.example.config.PostgresDatabase;
 import org.example.users.Gender;
 import org.example.users.User;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 public class Main {
     public static void main (String[] args) {
-        Connection connection = PostgresDatabase.getInstance().getPostgresConnection();
+        Connection connection = MysqlDatabase.getInstance().getMysqlConnection();
         UserDao userDao = new UserDao(connection);
 
 //        userDao.saveUser("Mark4", LocalDate.now(), true, Gender.MALE);
@@ -32,9 +33,9 @@ public class Main {
 //        List<User> allUsers = userDao.findAllUser();
 //        allUsers.forEach(user -> System.out.println(user.toString()));
 
-//        List<User> allActiveUsers = userDao.findAllUserWithActiveStatus(true);
-//        System.out.println("ACTIVE: ");
-//        allActiveUsers.forEach(user -> System.out.println(user.toString()));
+        List<User> allActiveUsers = userDao.findAllUserWithActiveStatus(true);
+        System.out.println("ACTIVE: ");
+        allActiveUsers.forEach(user -> System.out.println(user.toString()));
 //
 //        List<User> allDeactivateUsers = userDao.findAllUserWithActiveStatus(false);
 //        System.out.println("DEACTIVATE: ");

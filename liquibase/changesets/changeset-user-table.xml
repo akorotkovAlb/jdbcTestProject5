@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="andrii.korotkov" id="1">
+        <createTable tableName="users">
+            <column name="id" type="${type.long}">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="${type.string}"/>
+            <column name="birthday" type="${type.timestamp}"/>
+        </createTable>
+        <addPrimaryKey columnNames="id" constraintName="users_pk" tableName="users"/>
+        <sql>
+            CREATE SEQUENCE users_seq START 1;
+        </sql>
+        <sql>
+            ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_seq');
+        </sql>
+    </changeSet>
+
+    <changeSet author="andrii.korotkov" id="2">
+        <addColumn schemaName="${schema.name}" tableName="users">
+            <column name="active" type="${type.boolean}" />
+        </addColumn>
+        <addDefaultValue columnName="active" defaultValueBoolean="true" schemaName="public"
+                          tableName="users"/>
+    </changeSet>
+
+    <changeSet author="andrii.korotkov" id="3">
+        <addColumn schemaName="${schema.name}" tableName="users">
+            <column name="gender" type="${type.string}"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="andrii.korotkov" id="4">
+        <update schemaName="${schema.name}" tableName="users">
+            <column name="gender" value="MALE"/>
+            <where>gender NOT IN ('MALE', 'FEMALE')</where>
+        </update>
+
+        <sql>
+            ALTER TABLE users ADD CONSTRAINT gender_values CHECK (gender IN ('MALE', 'FEMALE'));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

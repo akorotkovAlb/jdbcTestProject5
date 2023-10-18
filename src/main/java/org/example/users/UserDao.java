@@ -38,12 +38,12 @@ public class UserDao {
         }
     }
 
-    public int saveUser(String name, LocalDate birthday, boolean active, Gender gender) {
+    public int saveUser(User user) {
         try {
-            this.insertStatement.setString(1, name);
-            this.insertStatement.setDate(2, java.sql.Date.valueOf(birthday.toString()));
-            this.insertStatement.setBoolean(3, active);
-            this.insertStatement.setString(4, gender.name());
+            this.insertStatement.setString(1, user.getName());
+            this.insertStatement.setDate(2, java.sql.Date.valueOf(user.getBirthday().toString()));
+            this.insertStatement.setBoolean(3, user.isActive());
+            this.insertStatement.setString(4, user.getGender().name());
             return this.insertStatement.executeUpdate();
         } catch(SQLException e) {
             System.out.println("Insert user exception. Reason: " + e.getMessage());
