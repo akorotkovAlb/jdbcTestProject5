@@ -1,4 +1,4 @@
-package org.example.users;
+package org.example.utils;
 
 public enum Gender {
 

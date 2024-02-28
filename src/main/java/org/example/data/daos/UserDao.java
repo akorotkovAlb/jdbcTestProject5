@@ -1,4 +1,7 @@
-package org.example.users;
+package org.example.data.daos;
+
+import org.example.utils.Gender;
+import org.example.data.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,12 +21,15 @@ public class UserDao {
     private static final String UPDATE_USER_STRING = "UPDATE users SET name = ?, birthday = ?, " +
             "active = ?, gender = ? WHERE id = ?";
 
+    private static final String SELECT_LAST_USER_STRING = "SELECT * FROM users WHERE id IN (SELECT MAX(id) FROM users)";
+
     private Connection connection;
     private PreparedStatement insertStatement;
     private PreparedStatement selectByStatement;
     private PreparedStatement selectAllStatement;
     private PreparedStatement selectAllActiveStatement;
     private PreparedStatement updateStatement;
+    private PreparedStatement selectLastUser;
 
     public UserDao(Connection connection) {
         this.connection = connection;
@@ -33,9 +39,26 @@ public class UserDao {
             this.selectAllStatement = connection.prepareStatement(SELECT_ALL_STRING);
             this.selectAllActiveStatement = connection.prepareStatement(SELECT_ALL_ACTIVE_STRING);
             this.updateStatement = connection.prepareStatement(UPDATE_USER_STRING);
+            this.selectLastUser = connection.prepareStatement(SELECT_LAST_USER_STRING);
         } catch(SQLException e) {
             System.out.println("User Service construction exception. Reason: " + e.getMessage());
         }
+    }
+
+    public Optional<User> findLastUser() {
+            try (ResultSet resultSet = this.selectLastUser.executeQuery()) {
+                if(resultSet.next()) {
+                    User user = new User(resultSet.getLong("id"),
+                            resultSet.getString("name"),
+                            LocalDate.parse(resultSet.getString("birthday")),
+                            resultSet.getBoolean("active"),
+                            Gender.valueOf(resultSet.getString("gender")));
+                    return Optional.of(user);
+                }
+            } catch(SQLException e) {
+                System.out.println("Select user exception. Reason: " + e.getMessage());
+            }
+        return Optional.empty();
     }
 
     public int saveUser(User user) {

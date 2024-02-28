@@ -1,10 +1,11 @@
-package org.example.mod5;
+package org.example.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.utils.Gender;
 
 import java.time.LocalDate;
 
@@ -13,9 +14,11 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OldUser {
+public class UserDto {
 
     private Long id;
     private String name;
     private LocalDate birthday;
+    private boolean active;
+    private Gender gender;
 }

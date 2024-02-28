@@ -2,7 +2,6 @@ package org.example.config;
 
 import org.example.props.PropertyReader;
 import org.flywaydb.core.Flyway;
-//import org.flywaydb.core.Flyway;
 
 import java.sql.*;
 

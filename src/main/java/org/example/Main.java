@@ -1,20 +1,44 @@
 package org.example;
 
-import org.example.config.MysqlDatabase;
 import org.example.config.PostgresDatabase;
-import org.example.users.Gender;
-import org.example.users.User;
-import org.example.users.UserDao;
+import org.example.data.daos.UserDao;
+import org.example.service.dto.UserDto;
+import org.example.service.users.UserService;
+import org.example.service.users.UserServiceImpl;
+import org.example.utils.Gender;
 
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class Main {
     public static void main (String[] args) {
-        Connection connection = MysqlDatabase.getInstance().getMysqlConnection();
+        Connection connection = PostgresDatabase.getInstance().getPostgresConnection();
         UserDao userDao = new UserDao(connection);
+        UserService service = new UserServiceImpl(userDao);
+
+        long result = service.create("qwerty", LocalDate.now(), Gender.FEMALE);
+        System.out.println("===> " + result);
+
+        List<UserDto> dtos = service.listAll();
+        dtos.forEach(dto -> System.out.println("++++> " + dto));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        userDao.saveUser("Mark4", LocalDate.now(), true, Gender.MALE);
 
@@ -33,9 +57,9 @@ public class Main {
 //        List<User> allUsers = userDao.findAllUser();
 //        allUsers.forEach(user -> System.out.println(user.toString()));
 
-        List<User> allActiveUsers = userDao.findAllUserWithActiveStatus(true);
-        System.out.println("ACTIVE: ");
-        allActiveUsers.forEach(user -> System.out.println(user.toString()));
+//        List<User> allActiveUsers = userDao.findAllUserWithActiveStatus(true);
+//        System.out.println("ACTIVE: ");
+//        allActiveUsers.forEach(user -> System.out.println(user.toString()));
 //
 //        List<User> allDeactivateUsers = userDao.findAllUserWithActiveStatus(false);
 //        System.out.println("DEACTIVATE: ");
